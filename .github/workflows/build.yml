@@ -32,4 +32,6 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: mac-app-dmg
-        path: dist_electron/*.dmg
+        path: |
+          dist_electron/*.dmg
+          MoKhoa_Tikovia.command
