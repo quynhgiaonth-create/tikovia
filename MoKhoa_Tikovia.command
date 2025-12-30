@@ -1,34 +1,38 @@
 #!/bin/bash
-# Lấy đường dẫn thư mục hiện tại
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-APP_NAME="Tikovia Banner AI.app"
-APP_PATH="$DIR/$APP_NAME"
+clear
+echo "============================================="
+echo "   CÔNG CỤ SỬA LỖI MỞ APP (TIKOVIA BANNER)   "
+echo "============================================="
+echo ""
+echo "Máy Mac không tìm thấy ứng dụng ở thư mục mặc định."
+echo "Để sửa lỗi chính xác, bạn hãy làm thao tác sau:"
+echo ""
+echo "👉 BƯỚC 1: Tìm file 'Tikovia Banner AI' (hình cái khiên hoặc logo app)."
+echo "👉 BƯỚC 2: Kéo và Thả file đó vào cửa sổ màu đen này."
+echo "👉 BƯỚC 3: Nhấn phím Enter."
+echo ""
+echo -n "Kéo file vào đây rồi nhấn Enter > "
+read USER_PATH
 
-echo "------------------------------------------------"
-echo "Đang sửa lỗi cho ứng dụng: $APP_NAME"
-echo "------------------------------------------------"
+# Xử lý đường dẫn (xóa dấu ngoặc kép nếu có)
+USER_PATH="${USER_PATH%\"}"
+USER_PATH="${USER_PATH#\"}"
+# Xóa khoảng trắng thừa đuôi
+USER_PATH="$(echo -e "${USER_PATH}" | sed -e 's/[[:space:]]*$//')"
 
-# Kiểm tra xem App có nằm cùng thư mục không
-if [ ! -d "$APP_PATH" ]; then
-    # Thử tìm trong thư mục Applications nếu người dùng đã copy vào đó
-    APP_PATH="/Applications/$APP_NAME"
-fi
+echo ""
+echo "Đang xử lý cho: $USER_PATH"
 
-if [ -d "$APP_PATH" ]; then
-    echo "Tìm thấy ứng dụng tại: $APP_PATH"
-    echo "Vui lòng nhập mật khẩu máy Mac để cấp quyền (Mật khẩu sẽ không hiện ký tự):"
-    
-    # Chạy lệnh xattr (cần quyền sudo)
-    sudo xattr -cr "$APP_PATH"
-    
-    # Ký lại ứng dụng bằng chữ ký ảo (giúp tránh một số lỗi khác)
-    sudo codesign --force --deep --sign - "$APP_PATH"
-    
+if [ -d "$USER_PATH" ]; then
+    echo "🔑 Vui lòng nhập mật khẩu máy Mac (Màn hình sẽ KHÔNG hiện gì khi gõ):"
+    sudo xattr -cr "$USER_PATH"
+    sudo codesign --force --deep --sign - "$USER_PATH"
     echo ""
-    echo "✅ Đã sửa lỗi xong! Bạn có thể mở ứng dụng ngay bây giờ."
+    echo "✅ THÀNH CÔNG! Đã sửa lỗi xong."
+    echo "Bây giờ bạn hãy mở lại ứng dụng nhé."
 else
-    echo "❌ Không tìm thấy ứng dụng!"
-    echo "Vui lòng đặt file này nằm CÙNG THƯ MỤC với file ứng dụng (hoặc copy ứng dụng vào Applications trước)."
+    echo "❌ LỖI: Đường dẫn không đúng hoặc không tìm thấy file."
+    echo "Bạn hãy thử chạy lại file này và làm lại nhé."
 fi
 
 echo ""
