@@ -43,7 +43,10 @@
     },
     "mac": {
       "target": "dmg",
-      "icon": "public/vite.svg"
+      "icon": "public/vite.svg",
+      "extraFiles": [
+        "MoKhoa_Tikovia.command"
+      ]
     },
     "nsis": {
       "oneClick": false,
