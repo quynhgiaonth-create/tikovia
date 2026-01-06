@@ -152,6 +152,7 @@ export default function App() {
         isCompact={!!activeProjectId} // Compact when we have a project open (which is always true after init)
         toggleTheme={toggleTheme}
         isDark={isDark}
+        onOpenSettings={() => window.dispatchEvent(new Event('OPEN_API_KEY_MODAL'))}
       />
 
       {/* Main Content Area */}

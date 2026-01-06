@@ -47,14 +47,24 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onSave }) => {
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
             <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden">
                 {/* Header */}
-                <div className="p-6 border-b border-zinc-800 bg-zinc-900/50">
-                    <div className="flex items-center gap-3 text-amber-500 mb-2">
-                        <Key className="w-6 h-6" />
-                        <h2 className="text-xl font-bold text-white">Cấu hình API Key</h2>
+                <div className="p-6 border-b border-zinc-800 bg-zinc-900/50 flex justify-between items-start">
+                    <div>
+                        <div className="flex items-center gap-3 text-amber-500 mb-2">
+                            <Key className="w-6 h-6" />
+                            <h2 className="text-xl font-bold text-white">Cấu hình API Key</h2>
+                        </div>
+                        <p className="text-zinc-400 text-sm">
+                            Ứng dụng cần Gemini API Key của bạn để hoạt động. Key được lưu an toàn trong trình duyệt của bạn.
+                        </p>
                     </div>
-                    <p className="text-zinc-400 text-sm">
-                        Ứng dụng cần Gemini API Key của bạn để hoạt động. Key được lưu an toàn trong trình duyệt của bạn.
-                    </p>
+                    {localStorage.getItem('GEMINI_API_KEY') && (
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            className="text-zinc-500 hover:text-white transition-colors"
+                        >
+                            <span className="text-2xl">&times;</span>
+                        </button>
+                    )}
                 </div>
 
                 {/* Body */}
@@ -94,7 +104,20 @@ export const ApiKeyModal: React.FC<ApiKeyModalProps> = ({ onSave }) => {
                 </div>
 
                 {/* Footer */}
-                <div className="p-6 border-t border-zinc-800 bg-zinc-900/50 flex justify-end">
+                <div className="p-6 border-t border-zinc-800 bg-zinc-900/50 flex justify-end gap-3">
+                    {localStorage.getItem('GEMINI_API_KEY') && (
+                        <button
+                            onClick={() => {
+                                if (window.confirm('Bạn có chắc muốn xóa API Key này không?')) {
+                                    localStorage.removeItem('GEMINI_API_KEY');
+                                    window.location.reload();
+                                }
+                            }}
+                            className="flex items-center gap-2 px-4 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-semibold rounded-lg transition-colors border border-red-500/20"
+                        >
+                            Xóa Key
+                        </button>
+                    )}
                     <button
                         onClick={handleSave}
                         className="flex items-center gap-2 px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-semibold rounded-lg transition-colors"
